@@ -6,98 +6,57 @@
 /*   By: danielro <danielro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:40:40 by danielro          #+#    #+#             */
-/*   Updated: 2022/09/08 13:40:46 by danielro         ###   ########.fr       */
+/*   Updated: 2022/09/19 18:58:27 by danielro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <fcntl.h>
-#include <stdlib.h>
+#include "get_next_line.h"
 
-int ft_linelen(char *str)
+char	*get_next_line(int fd)
 {
-    int i;
+	static char	*buf;
+	static int	line = 0;
+	static int	bytes_read = 0;
+	char		*txt;
+	int			nlen;
 
-    i = 0;
-    while (str[i] != 10 && str[i] != '\0')
-        i++;
-    return (i);
+	if (line == 0)
+	{
+		buf = malloc(BUFFER_SIZE * sizeof(char));
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+		buf[bytes_read] = '\0';
+		line++;
+	}
+	if (bytes_read < 1 || fd < 0 || BUFFER_SIZE < 1)
+		return (NULL);
+	nlen = ft_linelen(buf);
+	txt = ft_linewr(buf, nlen);
+	bytes_read -= nlen + 1;
+	line++;
+	buf = buf + nlen + 1;
+	return (txt);
 }
 
-char    *ft_line(char *src)
+int	main(void)
 {
-    char            *txt;
-    static int      end = 0;
-    int             start;
-    int             i = 0;
+	int		fd;
+	char	*txt;
 
-    start = end;
-    while (src[end] != 10)
-        end++;
-    txt = malloc((end - start + 1) * sizeof(char));
-    while (start < end)
-    {
-        txt[i] = src[start];
-        start++;
-        i++;
-    }
-    txt[start] = '\0';
-    end++;
-    return (txt);
-}
-
-char    *get_next_line(int fd)
-{
-    static char    *buf;
-    static int      line = 0;
-//    size_t          nbytes;
-    ssize_t         bytes_read = 0;
-    char            *txt;
-    int             nlen;
-    int             i = 0;
-
-//    printf("Buffer inicio: %s\n", buf);
-//    nbytes = sizeof(BUFFER_SIZE);
-    if (line == 0)
-    {
-        buf = malloc(BUFFER_SIZE * sizeof(char));
-        bytes_read = read(fd, buf, BUFFER_SIZE);
-        buf[bytes_read] = '\0';
-        line++;
-    }
-//    printf("Buffer: %s\n", buf);
-//    printf("Total bytes: %zd\n", bytes_read);
-//    printf("line: %d\n", line);
-//    txt = ft_line(buf);
-    nlen = ft_linelen(buf);
-    txt = malloc((nlen + 1) * sizeof(char));
-    while (nlen-- > 0)
-    {
-        txt[i] = buf[0];
-        buf++;
-        i++;
-    }
-    txt[i] = '\0';
-    line++;
-    buf++;
-    return (txt);
-}
-
-int     main(void)
-{
-    int     fd;
-    char    *txt;
-
-    fd = open("test.txt", O_RDONLY);
-    txt = get_next_line(fd);
-    printf("First line: %s\n", txt);
-    txt = get_next_line(fd);
-    printf("Second line: %s\n", txt);
-    txt = get_next_line(fd);
-    printf("Third line: %s\n", txt);
-//    txt = get_next_line(fd);
-//    printf("Fourth line: %s\n", txt);
-    return (0);
+	fd = open("../../../francinette/tests/get_next_line/fsoares/giant_line_nl.txt", O_RDONLY);
+//	fd = open("fsoares/1char.txt", O_RDONLY);
+	printf("fd: %d\n", fd);
+	txt = get_next_line(fd);
+	printf("First line: %s\n", txt);
+	txt = get_next_line(fd);
+	printf("Second line: %s\n", txt);
+	txt = get_next_line(fd);
+	printf("Third line: %s\n", txt);
+	txt = get_next_line(fd);
+	printf("Fourth line: %s\n", txt);
+	txt = get_next_line(fd);
+	printf("Fifth line: %s\n", txt);
+	txt = get_next_line(fd);
+	printf("Sixth line: %s\n", txt);
+	close(fd);
+	return (0);
 }
