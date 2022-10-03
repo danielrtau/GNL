@@ -14,26 +14,32 @@
 
 char	*get_next_line(int fd)
 {
-	static char	*buf;
-	static int	line = 0;
-	static int	bytes_read = 0;
-	char		*txt;
-	int			nlen;
+	char		buf[BUFFER_SIZE + 1];
+	int			bytes_read;
+	static char	*aux = NULL;
+	char		*txt = "";
 
-	if (line == 0)
-	{
-		buf = malloc(BUFFER_SIZE * sizeof(char));
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		buf[bytes_read] = '\0';
-		line++;
-	}
+	bytes_read = read(fd, buf, BUFFER_SIZE);
+	buf[bytes_read] = '\0';
 	if (bytes_read < 1 || fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	nlen = ft_linelen(buf);
-	txt = ft_linewr(buf, nlen);
-	bytes_read -= nlen + 1;
-	line++;
-	buf = buf + nlen + 1;
+	while (!ft_schrnl(buf))
+	{
+		aux = ft_line(aux, buf);
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+		buf[bytes_read] = '\0';
+	}
+//	if (ft_schrnl(buf))
+	{
+		txt = ft_linewr(aux, buf);
+		aux = ft_liner(buf); 
+	}
+/*	else if (bytes_read == BUFFER_SIZE)
+	{
+		aux = ft_line(aux, buf);
+		get_next_line(fd);
+	}*/
+//	printf("[txt: %s | aux: %s]", txt, aux);
 	return (txt);
 }
 
@@ -42,21 +48,23 @@ int	main(void)
 	int		fd;
 	char	*txt;
 
-	fd = open("../../../francinette/tests/get_next_line/fsoares/giant_line_nl.txt", O_RDONLY);
-//	fd = open("fsoares/1char.txt", O_RDONLY);
+//	fd = open("../../../francinette/tests/get_next_line/fsoares/1char.txt", O_RDONLY);
+	fd = open("test.txt", O_RDONLY);
 	printf("fd: %d\n", fd);
 	txt = get_next_line(fd);
-	printf("First line: %s\n", txt);
+	printf("First line: %s", txt);
 	txt = get_next_line(fd);
-	printf("Second line: %s\n", txt);
+	printf("Second line: %s", txt);
 	txt = get_next_line(fd);
-	printf("Third line: %s\n", txt);
+	printf("Third line: %s", txt);
 	txt = get_next_line(fd);
-	printf("Fourth line: %s\n", txt);
+	printf("Fourth line: %s", txt);
 	txt = get_next_line(fd);
-	printf("Fifth line: %s\n", txt);
+	printf("Fifth line: %s", txt);
 	txt = get_next_line(fd);
-	printf("Sixth line: %s\n", txt);
+	printf("Sixth line: %s", txt);
+	txt = get_next_line(fd);
+	printf("Seventh line: %s", txt);
 	close(fd);
-	return (0);
+return (0);
 }

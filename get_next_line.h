@@ -22,9 +22,16 @@
 #  define BUFFER_SIZE 42
 # endif
 
-int     ft_linelen(char *str);
 char	*get_next_line(int fd);
-char	*ft_linewr(char *src, int len);
-char	*ft_line(char *src);
+int		ft_linelen(char *str, char sch);
+char	*ft_linewr(char *src1, char *src2);
+int		ft_totalln(char *str);
+char	*ft_nextln(char *str);
+int		ft_schrnl(char *str);
+int		ft_strlen(char *str1, char *str2);
+char	*ft_line(char *src1, char *src2);
+char	*ft_linenl(char *src1, char *src2);
+int		ft_strlennl(char *str1, char *str2);
+char	*ft_liner(char *src);
 
 #endif
