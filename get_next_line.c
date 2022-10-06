@@ -25,21 +25,25 @@ char	*get_next_line(int fd)
 		return (NULL);
 	while (!ft_schrnl(buf))
 	{
-		aux = ft_line(aux, buf);
-		bytes_read = read(fd, buf, BUFFER_SIZE);
-		buf[bytes_read] = '\0';
+		if (!ft_schrnl(aux))
+		{
+			aux = ft_line(aux, buf);
+			bytes_read = read(fd, buf, BUFFER_SIZE);
+			buf[bytes_read] = '\0';
+		}
+		else
+			break;
 	}
-//	if (ft_schrnl(buf))
+	if (!ft_schrnl(aux))
 	{
 		txt = ft_linewr(aux, buf);
 		aux = ft_liner(buf); 
 	}
-/*	else if (bytes_read == BUFFER_SIZE)
+	else
 	{
-		aux = ft_line(aux, buf);
-		get_next_line(fd);
-	}*/
-//	printf("[txt: %s | aux: %s]", txt, aux);
+		txt = ft_totalln(aux);
+		aux = ft_liner(aux);
+	}
 	return (txt);
 }
 

@@ -6,17 +6,19 @@
 /*   By: danielro <danielro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 19:51:39 by danielro          #+#    #+#             */
-/*   Updated: 2022/09/16 19:51:42 by danielro         ###   ########.fr       */
+/*   Updated: 2022/10/04 19:58:00 by danielro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int	ft_linelen(char *str, char sch)
+int	ft_linelen(char *str, int sch)
 {
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] != sch)
 		i++;
 	return (i);
@@ -104,16 +106,19 @@ char	*ft_liner(char *src)
 		i++;
 	len = 0;
 	j = i + 1;
-	while (src[i++] != 0)
+	while (src[i] != 0)
+	{
 		len++;
+		i++;
+	}
 	aux = malloc(sizeof(char) * (len + 1));
 	i = 0;
 //	printf("--i: %d--", i);
 	while (src[j])
 	{
 		aux[i] = src[j];
-		j++;
 		i++;
+		j++;
 	}
 	aux[i] = 0;
 	return (aux);
@@ -160,7 +165,7 @@ char	*ft_linewr(char *src1, char *src2)
 	len = ft_linelen(src1, 0);
 	len += ft_linelen(src2, 10);
 	aux = malloc(sizeof(char) * (len + 2));
-	while (src1[i])
+	while (src1 && src1[i])
 	{
 		aux[i] = src1[i];
 		i++;
@@ -176,21 +181,23 @@ char	*ft_linewr(char *src1, char *src2)
 	return (aux);
 }
 
-int	ft_totalln(char *str)
+char	*ft_totalln(char *str)
 {
+	char	*aux;
 	int		i;
+	int		len;
 
 	i = 0;
+	len = ft_linelen(str, 10);
+	aux = malloc(sizeof(char) * (len + 2));
 	while (str[i] != 10)
 	{
+		aux[i] = str[i];
 		i++;
-		if (str[i] == 0)
-		{
-			i = 0;
-			break;
-		}
 	}
-	return (i);
+	aux[i++] = 10;
+	aux[i] = 0;
+	return (aux);
 }
 
 char	*ft_nextln(char *str)
@@ -210,6 +217,8 @@ int	ft_schrnl(char *str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i] != 0)
 	{
 		if(str[i] == 10)

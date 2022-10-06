@@ -6,7 +6,7 @@
 /*   By: danielro <danielro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/16 19:51:12 by danielro          #+#    #+#             */
-/*   Updated: 2022/09/16 19:51:15 by danielro         ###   ########.fr       */
+/*   Updated: 2022/10/04 19:50:04 by danielro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@
 # endif
 
 char	*get_next_line(int fd);
-int		ft_linelen(char *str, char sch);
+int		ft_linelen(char *str, int sch);
 char	*ft_linewr(char *src1, char *src2);
-int		ft_totalln(char *str);
+char	*ft_totalln(char *str);
 char	*ft_nextln(char *str);
 int		ft_schrnl(char *str);
 int		ft_strlen(char *str1, char *str2);
