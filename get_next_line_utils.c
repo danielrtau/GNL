@@ -19,7 +19,7 @@ int	ft_linelen(char *str, int sch)
 	i = 0;
 	if (!str)
 		return (0);
-	while (str[i] != sch)
+	while (str[i] != sch && str[i])
 		i++;
 	return (i);
 }
@@ -102,21 +102,25 @@ char	*ft_liner(char *src)
 	int		len;
 
 	i = 0;
-	while (src[i] != 10)
+
+	while (src[i] != 10 && src[i])
+		i++;
+	if (src[i])
 		i++;
 	len = 0;
-	j = i + 1;
+	j = i;
 	while (src[i] != 0)
 	{
 		len++;
 		i++;
 	}
+//	printf("[len: %d]", len);
 	aux = malloc(sizeof(char) * (len + 1));
 	i = 0;
-//	printf("--i: %d--", i);
 	while (src[j])
 	{
 		aux[i] = src[j];
+//		printf("[src: %c]", src[j]);
 		i++;
 		j++;
 	}
@@ -135,6 +139,8 @@ char	*ft_line(char *src1, char *src2)
 	j = 0;
 	len = ft_strlen(src1, src2);
 	aux = malloc(sizeof(char) * (len + 1));
+	if (aux == NULL)
+		return (NULL);
 	if (src1 != NULL)
 	{
 		while (src1[i] != 0)
@@ -181,7 +187,7 @@ char	*ft_linewr(char *src1, char *src2)
 	return (aux);
 }
 
-char	*ft_totalln(char *str)
+char	*ft_totalln(char *str, int opt)
 {
 	char	*aux;
 	int		i;
@@ -190,12 +196,15 @@ char	*ft_totalln(char *str)
 	i = 0;
 	len = ft_linelen(str, 10);
 	aux = malloc(sizeof(char) * (len + 2));
-	while (str[i] != 10)
+	while (str[i] != 10 && str[i])
 	{
 		aux[i] = str[i];
 		i++;
 	}
-	aux[i++] = 10;
+	if (opt == 1)
+		aux[i++] = 10;
+	else
+		i++;
 	aux[i] = 0;
 	return (aux);
 }
@@ -223,7 +232,7 @@ int	ft_schrnl(char *str)
 	{
 		if(str[i] == 10)
 			return(1);
-		str++;
+		i++;
 	}
 	return (0);
 }

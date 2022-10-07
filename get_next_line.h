@@ -25,7 +25,7 @@
 char	*get_next_line(int fd);
 int		ft_linelen(char *str, int sch);
 char	*ft_linewr(char *src1, char *src2);
-char	*ft_totalln(char *str);
+char	*ft_totalln(char *str, int opt);
 char	*ft_nextln(char *str);
 int		ft_schrnl(char *str);
 int		ft_strlen(char *str1, char *str2);

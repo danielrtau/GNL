@@ -20,40 +20,31 @@ char	*get_next_line(int fd)
 	char		*txt = "";
 
 	bytes_read = read(fd, buf, BUFFER_SIZE);
-	buf[bytes_read] = '\0';
-	if (bytes_read < 1 || fd < 0 || BUFFER_SIZE < 1)
+	if ((bytes_read < 1) || fd < 0 || BUFFER_SIZE < 1)
 		return (NULL);
-	while (!ft_schrnl(buf))
+	buf[bytes_read] = '\0';
+	aux = ft_line(aux, buf);
+	while (!ft_schrnl(aux) && bytes_read > 0)
 	{
-		if (!ft_schrnl(aux))
-		{
-			aux = ft_line(aux, buf);
-			bytes_read = read(fd, buf, BUFFER_SIZE);
-			buf[bytes_read] = '\0';
-		}
-		else
-			break;
+		bytes_read = read(fd, buf, BUFFER_SIZE);
+		buf[bytes_read] = '\0';
+		aux = ft_line(aux, buf);
 	}
-	if (!ft_schrnl(aux))
-	{
-		txt = ft_linewr(aux, buf);
-		aux = ft_liner(buf); 
-	}
+	if (bytes_read < BUFFER_SIZE)
+		txt = ft_totalln(aux, 0);
 	else
-	{
-		txt = ft_totalln(aux);
-		aux = ft_liner(aux);
-	}
+		txt = ft_totalln(aux, 1);
+	aux = ft_liner(aux);
 	return (txt);
 }
-
+/*
 int	main(void)
 {
 	int		fd;
 	char	*txt;
 
-//	fd = open("../../../francinette/tests/get_next_line/fsoares/1char.txt", O_RDONLY);
-	fd = open("test.txt", O_RDONLY);
+	fd = open("../../../francinette/tests/get_next_line/fsoares/1char.txt", O_RDONLY);
+//	fd = open("test.txt", O_RDONLY);
 	printf("fd: %d\n", fd);
 	txt = get_next_line(fd);
 	printf("First line: %s", txt);
@@ -71,4 +62,4 @@ int	main(void)
 	printf("Seventh line: %s", txt);
 	close(fd);
 return (0);
-}
+}*/
