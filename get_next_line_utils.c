@@ -12,227 +12,103 @@
 
 #include "get_next_line.h"
 
-int	ft_linelen(char *str, int sch)
+size_t	ft_strlen(const char *s)
 {
-	int	i;
+	int	n;
 
-	i = 0;
-	if (!str)
+	if (!s)
 		return (0);
-	while (str[i] != sch && str[i])
-		i++;
-	return (i);
+	n = 0;
+	while (s[n])
+		n++;
+	return (n);
 }
 
-char	*ft_linenl(char *src1, char *src2)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	char	*aux;
-	int		i;
-	int		j;
-	int		len;
+	unsigned int	a;
+	unsigned int	b;
+	unsigned int	c;
 
-	i = 0;
-	j = 0;
-	len = ft_strlennl(src1, src2);
-	aux = malloc(sizeof(char) * (len + 2));
-	if (src1 != NULL)
+	a = ft_strlen(src);
+	b = ft_strlen(dst);
+	c = 0;
+	if (dstsize > b)
 	{
-		while (src1[i] != 0)
+		while (src[c] && c < (dstsize - b - 1))
 		{
-			aux[i] = src1[i];
-			i++;
+			dst[b + c] = src[c];
+			c++;
 		}
+		dst[b + c] = '\0';
+		return (a + b);
 	}
-	while (src2[j] != 10)
-	{
-		aux[i] = src2[j];
-		i++;
-		j++;
-	}
-	aux[i++] = 10;
-	aux[i] = 0;
-	return (aux);
+	return (a + dstsize);
 }
 
-int	ft_strlennl(char *str1, char *str2)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	int	i;
-	int	j;
+	int				a;
+	unsigned int	b;
 
-	i = 0;
-	j = 0;
-	if (str1 != NULL)
+	a = ft_strlen(src);
+	b = 0;
+	if (dstsize != 0)
 	{
-		while (str1[i])
-			i++;
+		while (src[b] && b < (dstsize - 1))
+		{
+			dst[b] = src[b];
+			b++;
+		}
+		dst[b] = '\0';
 	}
-	while (str2[j] != 10)
-	{
-		i++;
-		j++;
-	}
-	return (i);
+	return (a);
 }
 
-int	ft_strlen(char *str1, char *str2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int	i;
-	int	j;
+	int		a;
+	int		b;
+	char	*c;
 
-	i = 0;
-	j = 0;
-	if (str1 != NULL)
-	{
-		while (str1[i])
-			i++;
-	}
-	while (str2[j])
-	{
-		i++;
-		j++;
-	}
-	return (i);
-}
-
-char	*ft_liner(char *src)
-{
-	char	*aux;
-	int		i;
-	int		j;
-	int		len;
-
-	i = 0;
-
-	while (src[i] != 10 && src[i])
-		i++;
-	if (src[i])
-		i++;
-	len = 0;
-	j = i;
-	while (src[i] != 0)
-	{
-		len++;
-		i++;
-	}
-//	printf("[len: %d]", len);
-	aux = malloc(sizeof(char) * (len + 1));
-	i = 0;
-	while (src[j])
-	{
-		aux[i] = src[j];
-//		printf("[src: %c]", src[j]);
-		i++;
-		j++;
-	}
-	aux[i] = 0;
-	return (aux);
-}
-
-char	*ft_line(char *src1, char *src2)
-{
-	char	*aux;
-	int		i;
-	int		j;
-	int		len;
-
-	i = 0;
-	j = 0;
-	len = ft_strlen(src1, src2);
-	aux = malloc(sizeof(char) * (len + 1));
-	if (aux == NULL)
+	a = ft_strlen(s1);
+	b = ft_strlen(s2);
+	c = malloc((a + b + 1) * sizeof(char));
+	if (c == NULL)
 		return (NULL);
-	if (src1 != NULL)
+	if (s1)
 	{
-		while (src1[i] != 0)
-		{
-			aux[i] = src1[i];
-			i++;
-		}
+		ft_strlcpy(c, s1, a + 1);
+		ft_strlcat(c, s2, a + b + 1);
 	}
-	while (src2[j])
-	{
-		aux[i] = src2[j];
-		i++;
-		j++;
-	}
-	aux[i] = 0;
-	return (aux);
-}
-
-char	*ft_linewr(char *src1, char *src2)
-{
-	char	*aux;
-	int		i;
-	int		j;
-	int		len;
-
-	i = 0;
-	j = i;
-	len = ft_linelen(src1, 0);
-	len += ft_linelen(src2, 10);
-	aux = malloc(sizeof(char) * (len + 2));
-	while (src1 && src1[i])
-	{
-		aux[i] = src1[i];
-		i++;
-	}
-	while (src2[j] != 10)
-	{
-		aux[i] = src2[j];
-		i++;
-		j++;
-	}
-	aux[i++] = 10;
-	aux[i] = 0;
-	return (aux);
-}
-
-char	*ft_totalln(char *str, int opt)
-{
-	char	*aux;
-	int		i;
-	int		len;
-
-	i = 0;
-	len = ft_linelen(str, 10);
-	aux = malloc(sizeof(char) * (len + 2));
-	while (str[i] != 10 && str[i])
-	{
-		aux[i] = str[i];
-		i++;
-	}
-	if (opt == 1)
-		aux[i++] = 10;
 	else
-		i++;
-	aux[i] = 0;
-	return (aux);
+		ft_strlcpy(c, s2, b + 1);
+	return (c);
 }
 
-char	*ft_nextln(char *str)
+int	ft_strchr(const char *s, int c)
 {
-	int		i;
-	char	*txt;
+	int	a;
 
-	i = 0;
-	while (str[i] != '\0' && str[i] != 10)
-		i++;
-	txt = str + i;
-	return (txt);
-}
-
-int	ft_schrnl(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i] != 0)
-	{
-		if(str[i] == 10)
-			return(1);
-		i++;
-	}
+	a = 0;
+	while (s[a] && (char)c != s[a])
+		a++;
+	if (s[a] == (char)c)
+		return (a + 1);
 	return (0);
+}
+
+char	*ft_linewr(char *aux, int n)
+{
+	int		a;
+	char	*b;
+
+	a = 0;
+	while (aux[a] != 10 && aux[a])
+		a++;
+	b = malloc((a + n + 1) * sizeof(char));
+	if (b == NULL)
+		return (NULL);
+	ft_strlcpy(b, aux, a + n + 1);
+	return (b);
 }

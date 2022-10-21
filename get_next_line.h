@@ -23,15 +23,11 @@
 # endif
 
 char	*get_next_line(int fd);
-int		ft_linelen(char *str, int sch);
-char	*ft_linewr(char *src1, char *src2);
-char	*ft_totalln(char *str, int opt);
-char	*ft_nextln(char *str);
-int		ft_schrnl(char *str);
-int		ft_strlen(char *str1, char *str2);
-char	*ft_line(char *src1, char *src2);
-char	*ft_linenl(char *src1, char *src2);
-int		ft_strlennl(char *str1, char *str2);
-char	*ft_liner(char *src);
+size_t	ft_strlen(const char *s);
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+char	*ft_strjoin(char const *s1, char const *s2);
+int		ft_strchr(const char *s, int c);
+char	*ft_linewr(char *aux, int n);
 
 #endif
