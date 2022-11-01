@@ -83,6 +83,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	}
 	else
 		ft_strlcpy(c, s2, b + 1);
+	free((void *)s1);
 	return (c);
 }
 
@@ -91,24 +92,13 @@ int	ft_strchr(const char *s, int c)
 	int	a;
 
 	a = 0;
-	while (s[a] && (char)c != s[a])
+	if (!s)
+		return (a);
+	while (s[a] && s)
+	{
+		if (s[a] == c)
+			return (a + 1);
 		a++;
-	if (s[a] == (char)c)
-		return (a + 1);
+	}
 	return (0);
-}
-
-char	*ft_linewr(char *aux, int n)
-{
-	int		a;
-	char	*b;
-
-	a = 0;
-	while (aux[a] != 10 && aux[a])
-		a++;
-	b = malloc((a + n + 1) * sizeof(char));
-	if (b == NULL)
-		return (NULL);
-	ft_strlcpy(b, aux, a + n + 1);
-	return (b);
 }
