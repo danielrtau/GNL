@@ -6,7 +6,7 @@
 /*   By: danielro <danielro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/08 13:40:40 by danielro          #+#    #+#             */
-/*   Updated: 2022/09/19 18:58:27 by danielro         ###   ########.fr       */
+/*   Updated: 2022/11/03 19:40:07 by danielro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,7 @@ char	*get_next_line(int fd)
 		aux = malloc(sizeof(char));
 		aux[0] = 0;
 	}
-	printf("")
 	aux = ft_read_buff(aux, fd);
-	if (!aux)
-		return (NULL);
 	txt = ft_linewr(aux, ft_strchr(aux, 10));
 	aux = ft_auxline(aux, ft_strchr(aux, 10));
 	return (txt);
@@ -46,8 +43,11 @@ char	*ft_read_buff(char *aux, int fd)
 	while(!ft_strchr(aux, 10) && bytes_read > 0)
 	{
 		bytes_read = read(fd, buf, BUFFER_SIZE);
-		if (bytes_read < 0)
+		if (bytes_read < 0 || (bytes_read == 0 && !aux[0]))
+		{
+			free(aux);
 			return (NULL);
+		}
 		if (bytes_read == 0)
 			return (aux);			
 		buf[bytes_read] = 0;
