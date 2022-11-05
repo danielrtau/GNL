@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: danielro <danielro@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/09/08 13:40:40 by danielro          #+#    #+#             */
-/*   Updated: 2022/11/03 19:40:07 by danielro         ###   ########.fr       */
+/*   Created: 2022/11/05 14:52:01 by danielro          #+#    #+#             */
+/*   Updated: 2022/11/05 14:52:04 by danielro         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,14 @@ char	*ft_auxline(char *aux, int a);
 
 char	*get_next_line(int fd)
 {
-	static char	*aux;
+	static char	*aux[4096];
 	char		*txt;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1 || fd > 4096)
 		return (NULL);
-	if (!aux)
-	{
-		aux = malloc(sizeof(char));
-		aux[0] = 0;
-	}
-	aux = ft_read_buff(aux, fd);
-	txt = ft_linewr(aux, ft_strchr(aux, 10));
-	aux = ft_auxline(aux, ft_strchr(aux, 10));
+	aux[fd] = ft_read_buff(aux[fd], fd);
+	txt = ft_linewr(aux[fd], ft_strchr(aux[fd], 10));
+	aux[fd] = ft_auxline(aux[fd], ft_strchr(aux[fd], 10));
 	return (txt);
 }
 
@@ -39,6 +34,11 @@ char	*ft_read_buff(char *aux, int fd)
 	char	buf[BUFFER_SIZE + 1];
 	int		bytes_read;
 
+	if (!aux)
+	{
+		aux = malloc(sizeof(char));
+		aux[0] = 0;
+	}
 	bytes_read = 1;
 	while (!ft_strchr(aux, 10) && bytes_read > 0)
 	{
